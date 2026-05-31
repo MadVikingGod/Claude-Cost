@@ -73,10 +73,10 @@ const els = {
   unitLabel: $("unit-label"),
   comparisonSub: $("comparison-sub"),
   developers: $("developers"),
-  days: $("days"),
+  months: $("months"),
   devTokens: $("dev-tokens"),
   devUnits: $("dev-units"),
-  devUnitsPerDay: $("dev-units-per-day"),
+  devUnitsPerMonth: $("dev-units-per-month"),
   devSentence: $("dev-sentence"),
 };
 
@@ -191,21 +191,21 @@ function recalc() {
 
 function recalcDevs(totalTokens, unit) {
   const devs = Math.max(1, Math.floor(Number(els.developers.value) || 1));
-  const days = Math.max(1, Math.floor(Number(els.days.value) || 1));
+  const months = Math.max(1, Math.floor(Number(els.months.value) || 1));
 
   const perDevTokens = totalTokens / devs;
   const perDevUnits = perDevTokens / unit.tokens;
-  const perDevUnitsPerDay = perDevUnits / days;
+  const perDevUnitsPerMonth = perDevUnits / months;
 
   els.devTokens.textContent = humanNumber(perDevTokens);
   els.devUnits.textContent = humanCount(perDevUnits);
-  els.devUnitsPerDay.textContent = humanCount(perDevUnitsPerDay);
+  els.devUnitsPerMonth.textContent = humanCount(perDevUnitsPerMonth);
 
   els.devSentence.textContent =
     `${nfFull.format(devs)} developers would each work through about ` +
     `${humanCount(perDevUnits)} ${unit.label} — roughly ` +
-    `${humanCount(perDevUnitsPerDay)} ${perDevUnitsPerDay >= 2 || perDevUnitsPerDay < 1 ? unit.label : unit.singular} ` +
-    `every working day for ${nfFull.format(days)} days.`;
+    `${humanCount(perDevUnitsPerMonth)} ${perDevUnitsPerMonth >= 2 || perDevUnitsPerMonth < 1 ? unit.label : unit.singular} ` +
+    `per month over ${nfFull.format(months)} ${months === 1 ? "month" : "months"}.`;
 }
 
 // ---------- budget input: format with commas as you type ----------
@@ -224,7 +224,7 @@ function formatBudgetInput() {
 buildSelects();
 els.model.value = "opus"; // default that makes the $500M ≈ 10k kernels story land
 
-[els.model, els.unit, els.outputSplit, els.developers, els.days].forEach((el) =>
+[els.model, els.unit, els.outputSplit, els.developers, els.months].forEach((el) =>
   el.addEventListener("input", recalc)
 );
 

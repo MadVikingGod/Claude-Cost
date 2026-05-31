@@ -82,8 +82,8 @@
     <section class="card dev-section" aria-label="Per developer breakdown">
       <h2>Split it across a team</h2>
       <p class="section-intro">
-        Spread the same budget across a team of developers and a working
-        period to see what each person would need to chew through.
+        Spread the same budget across a team of developers over a number of
+        months to see what each person would chew through per month.
       </p>
 
       <div class="dev-controls">
@@ -92,9 +92,9 @@
           <input type="number" id="developers" min="1" step="1" value="100" />
         </div>
         <div class="field">
-          <label for="days">Working days</label>
-          <input type="number" id="days" min="1" step="1" value="260" />
-          <p class="hint">~260 = one year of weekdays.</p>
+          <label for="months">Months</label>
+          <input type="number" id="months" min="1" step="1" value="12" />
+          <p class="hint">How long the budget is spread over.</p>
         </div>
       </div>
 
@@ -108,8 +108,8 @@
           <span class="stat-label"><span class="unit-label">kernels</span> each</span>
         </div>
         <div class="stat">
-          <span class="stat-num" id="dev-units-per-day">—</span>
-          <span class="stat-label"><span class="unit-label">kernels</span> / day</span>
+          <span class="stat-num" id="dev-units-per-month">—</span>
+          <span class="stat-label"><span class="unit-label">kernels</span> / month</span>
         </div>
       </div>
 
