@@ -1,8 +1,8 @@
-# Cloudflare Pages configuration for this static site.
-# Deploy from the repo root with:  wrangler pages deploy .
+# Cloudflare Workers static-assets configuration for this static site.
+# Deploy from the repo root with:  npx wrangler deploy
+# (This is an assets-only Worker: no server code, it just serves ./public.)
 name = "claude-cost"
 compatibility_date = "2026-05-31"
 
-# The site is plain static files with no build step, so the build output
-# directory is the repo root itself.
-pages_build_output_dir = "."
+[assets]
+directory = "./public"
