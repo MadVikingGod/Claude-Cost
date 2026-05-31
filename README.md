@@ -33,10 +33,26 @@ Or open `index.html` directly in a browser.
 
 ## Deploy to Cloudflare Pages
 
-This is a plain static site, so deployment is just uploading the files:
-
-1. Create a new **Pages** project and connect this repo (or upload the folder).
-2. **Build command:** leave empty. **Build output directory:** `/` (the repo root).
-3. Deploy.
-
+This is a plain static site, so deployment is just uploading the files.
 No framework, no environment variables, no server runtime required.
+
+### Option A — Dashboard (auto-deploys on push)
+
+1. **dash.cloudflare.com** → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
+2. Select this repo.
+3. Configure the build:
+   - **Framework preset:** `None`
+   - **Build command:** *(leave empty)*
+   - **Build output directory:** `/`
+4. **Save and Deploy.** You'll get a `*.pages.dev` URL, and every push to the
+   production branch redeploys automatically.
+
+### Option B — Wrangler CLI
+
+A `wrangler.toml` is included, so from the repo root:
+
+```sh
+npm install -g wrangler   # if you don't have it
+wrangler login            # one-time browser auth
+wrangler pages deploy .
+```
