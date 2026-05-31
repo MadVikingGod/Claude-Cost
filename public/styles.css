@@ -202,6 +202,14 @@ input[type="range"] {
 .about a { color: var(--accent-soft); }
 .about a:hover { color: var(--accent); }
 
+/* ---------- built-with disclaimer ---------- */
+.built-with {
+  text-align: center;
+  color: var(--text-muted);
+}
+.built-with p { margin: 0; }
+.built-with strong { color: var(--accent-soft); }
+
 /* ---------- footer ---------- */
 .site-footer {
   color: var(--text-muted);

@@ -69,7 +69,7 @@
       </p>
 
       <div class="comparison">
-        <p class="comparison-lead">That's like feeding Claude</p>
+        <p class="comparison-lead">That's like feeding <span id="feed-model">Claude</span></p>
         <p class="comparison-big">
           <span id="unit-count">—</span>
           <span id="unit-label" class="unit-label">Linux kernels</span>
@@ -138,9 +138,12 @@
       </p>
       <ul>
         <li>
-          <strong>Linux kernel</strong> — from a recent checkout of ~37&nbsp;million
-          lines of source code, at roughly 10 tokens per line ≈
-          <strong>400&nbsp;million tokens</strong>.
+          <strong>Codebases</strong> — line counts from recent checkouts, at
+          roughly 10 tokens per line: the Linux kernel (~37&nbsp;million lines)
+          ≈ <strong>400&nbsp;million tokens</strong>, Kubernetes (~3.7&nbsp;million
+          lines) ≈ <strong>37&nbsp;million tokens</strong>, and the Docker engine
+          (moby, ~380k lines) ≈ <strong>3.8&nbsp;million tokens</strong>.
+          Codebase counts exclude vendored third-party dependencies.
         </li>
         <li>
           <strong>Books and Wikipedia</strong> — taken from published word
@@ -154,13 +157,21 @@
         comparison as a ballpark.
       </p>
     </section>
+
+    <!-- ============ BUILT-WITH DISCLAIMER ============ -->
+    <section class="card built-with" aria-label="How this was built">
+      <p>
+        This site was built with Claude Code, so just assume everything is
+        wrong. It took approximately <strong>13.2 million</strong> tokens.
+      </p>
+    </section>
   </main>
 
   <footer class="site-footer">
     <p>
       Pricing is list price per million tokens and is approximate.
       Comparison sizes are rough estimates for fun, not exact counts.
-      Not affiliated with Anthropic.
+      Not affiliated with Anthropic or OpenAI.
     </p>
   </footer>
 

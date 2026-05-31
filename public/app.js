@@ -5,12 +5,16 @@
  * Pure static, no dependencies. All numbers are list-price estimates.
  */
 
-// ---- Model list price, US dollars per MILLION tokens ----
-// Edit these as Anthropic pricing changes.
+// ---- Model list price, US dollars per MILLION tokens (standard tier) ----
+// Edit these as provider pricing changes.
 const MODELS = [
-  { id: "opus",   name: "Claude Opus 4.8",   inputPerM: 15, outputPerM: 75 },
-  { id: "sonnet", name: "Claude Sonnet 4.6", inputPerM: 3,  outputPerM: 15 },
-  { id: "haiku",  name: "Claude Haiku 4.5",  inputPerM: 1,  outputPerM: 5  },
+  { id: "opus",       provider: "Claude (Anthropic)", name: "Claude Opus 4.8",   inputPerM: 15,   outputPerM: 75   },
+  { id: "sonnet",     provider: "Claude (Anthropic)", name: "Claude Sonnet 4.6", inputPerM: 3,    outputPerM: 15   },
+  { id: "haiku",      provider: "Claude (Anthropic)", name: "Claude Haiku 4.5",  inputPerM: 1,    outputPerM: 5    },
+  { id: "gpt55",      provider: "ChatGPT (OpenAI)",   name: "GPT-5.5",           inputPerM: 5,    outputPerM: 30   },
+  { id: "gpt54",      provider: "ChatGPT (OpenAI)",   name: "GPT-5.4",           inputPerM: 2.5,  outputPerM: 15   },
+  { id: "gpt4o",      provider: "ChatGPT (OpenAI)",   name: "GPT-4o",            inputPerM: 2.5,  outputPerM: 10   },
+  { id: "gpt4o-mini", provider: "ChatGPT (OpenAI)",   name: "GPT-4o mini",       inputPerM: 0.15, outputPerM: 0.6  },
 ];
 
 // ---- Comparison units, measured in tokens ----
@@ -23,6 +27,20 @@ const UNITS = [
     singular: "Linux kernel",
     tokens: 4e8,
     detail: "The Linux kernel source (~37M lines of code) ≈ 400 million tokens, at roughly 10 tokens per line.",
+  },
+  {
+    id: "kubernetes",
+    label: "Kubernetes codebases",
+    singular: "Kubernetes codebase",
+    tokens: 3.7e7,
+    detail: "The Kubernetes source (~3.7M lines, excluding vendored deps) ≈ 37 million tokens, at roughly 10 tokens per line.",
+  },
+  {
+    id: "docker",
+    label: "Docker codebases",
+    singular: "Docker codebase",
+    tokens: 3.8e6,
+    detail: "The Docker engine source (moby/moby, ~380k lines, excluding vendored deps) ≈ 3.8 million tokens, at roughly 10 tokens per line.",
   },
   {
     id: "wikipedia",
@@ -72,6 +90,7 @@ const els = {
   unitCount: $("unit-count"),
   unitLabel: $("unit-label"),
   comparisonSub: $("comparison-sub"),
+  feedModel: $("feed-model"),
   developers: $("developers"),
   months: $("months"),
   devTokens: $("dev-tokens"),
@@ -133,9 +152,16 @@ function budgetWords(n) {
 
 // ---------- populate selects ----------
 function buildSelects() {
-  els.model.innerHTML = MODELS.map(
-    (m) => `<option value="${m.id}">${m.name}</option>`
-  ).join("");
+  // Group models by provider into <optgroup>s.
+  const providers = [...new Set(MODELS.map((m) => m.provider))];
+  els.model.innerHTML = providers
+    .map((p) => {
+      const opts = MODELS.filter((m) => m.provider === p)
+        .map((m) => `<option value="${m.id}">${m.name}</option>`)
+        .join("");
+      return `<optgroup label="${p}">${opts}</optgroup>`;
+    })
+    .join("");
   els.unit.innerHTML = UNITS.map(
     (u) => `<option value="${u.id}">${u.singular[0].toUpperCase() + u.singular.slice(1)}</option>`
   ).join("");
@@ -162,6 +188,7 @@ function recalc() {
   els.budgetWords.textContent = budgetWords(budget);
   els.modelPricing.textContent =
     `$${model.inputPerM} / 1M input tokens · $${model.outputPerM} / 1M output tokens`;
+  els.feedModel.textContent = model.name;
   els.unitDetail.textContent = unit.detail;
 
   // Blended price per token (dollars).
