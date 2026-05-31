@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Cost Visualizer — what does $500M of Claude buy?</title>
+  <meta name="description" content="Visualize how much work Claude can do for a given budget: tokens, and relatable comparisons like feeding the Linux kernel codebase thousands of times." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>How much Claude does your money buy?</h1>
+    <p class="subtitle">
+      Pick a budget and a model, and see how many tokens that buys —
+      then watch it turn into something you can actually picture.
+    </p>
+  </header>
+
+  <main>
+    <!-- ============ CONTROLS ============ -->
+    <section class="card controls" aria-label="Inputs">
+      <div class="field">
+        <label for="budget">Budget</label>
+        <div class="input-prefix">
+          <span aria-hidden="true">$</span>
+          <input
+            type="text"
+            id="budget"
+            inputmode="numeric"
+            autocomplete="off"
+            value="500,000,000" />
+        </div>
+        <p class="hint" id="budget-words">five hundred million dollars</p>
+      </div>
+
+      <div class="field">
+        <label for="model">Model</label>
+        <select id="model"></select>
+        <p class="hint" id="model-pricing"></p>
+      </div>
+
+      <div class="field">
+        <label for="output-split">
+          Output tokens: <span id="output-split-value">30</span>%
+          <span class="muted">(input: <span id="input-split-value">70</span>%)</span>
+        </label>
+        <input type="range" id="output-split" min="0" max="100" step="1" value="30" />
+        <p class="hint">
+          Output tokens cost much more than input. Most real workloads read
+          a lot and write a little.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="unit">Compare to</label>
+        <select id="unit"></select>
+        <p class="hint" id="unit-detail"></p>
+      </div>
+    </section>
+
+    <!-- ============ HEADLINE RESULT ============ -->
+    <section class="card result" aria-live="polite">
+      <p class="result-eyebrow">For that budget you could process</p>
+      <p class="result-big"><span id="total-tokens">—</span> tokens</p>
+      <p class="result-breakdown">
+        <span id="input-tokens">—</span> input
+        &nbsp;·&nbsp;
+        <span id="output-tokens">—</span> output
+      </p>
+
+      <div class="comparison">
+        <p class="comparison-lead">That's like feeding Claude</p>
+        <p class="comparison-big">
+          <span id="unit-count">—</span>
+          <span id="unit-label" class="unit-label">Linux kernels</span>
+        </p>
+        <p class="comparison-sub" id="comparison-sub"></p>
+      </div>
+    </section>
+
+    <!-- ============ PER-DEVELOPER ============ -->
+    <section class="card dev-section" aria-label="Per developer breakdown">
+      <h2>Split it across a team</h2>
+      <p class="section-intro">
+        Spread the same budget across a team of developers and a working
+        period to see what each person would need to chew through.
+      </p>
+
+      <div class="dev-controls">
+        <div class="field">
+          <label for="developers">Developers</label>
+          <input type="number" id="developers" min="1" step="1" value="100" />
+        </div>
+        <div class="field">
+          <label for="days">Working days</label>
+          <input type="number" id="days" min="1" step="1" value="260" />
+          <p class="hint">~260 = one year of weekdays.</p>
+        </div>
+      </div>
+
+      <div class="dev-results">
+        <div class="stat">
+          <span class="stat-num" id="dev-tokens">—</span>
+          <span class="stat-label">tokens per developer</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" id="dev-units">—</span>
+          <span class="stat-label"><span class="unit-label">kernels</span> each</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" id="dev-units-per-day">—</span>
+          <span class="stat-label"><span class="unit-label">kernels</span> / day</span>
+        </div>
+      </div>
+
+      <p class="dev-sentence" id="dev-sentence"></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      Pricing is list price per million tokens and is approximate.
+      Comparison sizes are rough estimates for fun, not exact counts.
+      Not affiliated with Anthropic.
+    </p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
