@@ -12,17 +12,18 @@ same budget across a team of developers and a working period.
 It's a static site — no build step, no dependencies. Just serve the folder:
 
 ```sh
-python3 -m http.server 8000
+python3 -m http.server 8000 --directory public
 # then open http://localhost:8000
 ```
 
-Or open `index.html` directly in a browser.
+Or open `public/index.html` directly in a browser.
 
 ## Files
 
-- `index.html` — page structure and controls
-- `styles.css` — responsive, mobile-first styling
-- `app.js` — pricing data, comparison sizes, and all calculations
+- `public/index.html` — page structure and controls
+- `public/styles.css` — responsive, mobile-first styling
+- `public/app.js` — pricing data, comparison sizes, and all calculations
+- `wrangler.toml` — Cloudflare deploy config (serves `public/`)
 
 ## Editing the numbers
 
@@ -31,28 +32,23 @@ Or open `index.html` directly in a browser.
 - **Comparison sizes** (Linux kernel, Wikipedia, etc.) live in the `UNITS` array.
   These are deliberately rough, order-of-magnitude estimates.
 
-## Deploy to Cloudflare Pages
+## Deploy to Cloudflare
 
-This is a plain static site, so deployment is just uploading the files.
-No framework, no environment variables, no server runtime required.
+This deploys as a **Workers static-assets** site (an assets-only Worker that
+just serves `public/`). No framework, no environment variables, no server
+runtime required.
 
-### Option A — Dashboard (auto-deploys on push)
+### Option A — Connect to Git (auto-deploys on push)
 
-1. **dash.cloudflare.com** → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
-2. Select this repo.
-3. Configure the build:
-   - **Framework preset:** `None`
-   - **Build command:** *(leave empty)*
-   - **Build output directory:** `/`
-4. **Save and Deploy.** You'll get a `*.pages.dev` URL, and every push to the
+1. **dash.cloudflare.com** → **Workers & Pages** → **Create** → connect this repo.
+2. Cloudflare detects `wrangler.toml`; the deploy command is `npx wrangler deploy`.
+3. **Save and Deploy.** You'll get a `*.workers.dev` URL, and every push to the
    production branch redeploys automatically.
 
 ### Option B — Wrangler CLI
 
-A `wrangler.toml` is included, so from the repo root:
-
 ```sh
 npm install -g wrangler   # if you don't have it
 wrangler login            # one-time browser auth
-wrangler pages deploy .
+wrangler deploy           # serves ./public per wrangler.toml
 ```
