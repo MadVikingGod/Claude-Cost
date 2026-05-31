@@ -21,8 +21,8 @@ const UNITS = [
     id: "kernel",
     label: "Linux kernels",
     singular: "Linux kernel",
-    tokens: 1.5e9,
-    detail: "The full Linux kernel source tree (~36M lines) ≈ 1.5 billion tokens.",
+    tokens: 4e8,
+    detail: "The Linux kernel source (~37M lines of code) ≈ 400 million tokens, at roughly 10 tokens per line.",
   },
   {
     id: "wikipedia",
